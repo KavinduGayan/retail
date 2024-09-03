@@ -1,6 +1,26 @@
 spring:
   application:
     name: product-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database_name?useSSL=false&serverTimezone=UTC
+    username: user
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5              # Minimum number of idle connections in the pool
+      maximum-pool-size: 20        # Maximum size of the connection pool
+      max-lifetime: 1800000        # Maximum lifetime of a connection in the pool (30 minutes)
+      connection-timeout: 30000    # Maximum time to wait for a connection from the pool (30 seconds)
+      connection-test-query: SELECT 1
+
+  jpa:
+    hibernate:
+      ddl-auto: update             # Automatically update the database schema to match entities
+    show-sql: true                 # Show SQL queries in the logs
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true           # Format SQL in the console/logs for better readability
 
 server:
   port: 9091
@@ -11,3 +31,13 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+
+
+
+
+
+# Optional: Enable detailed logging of SQL statements (debug level)
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
